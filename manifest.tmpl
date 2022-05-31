@@ -1,0 +1,7 @@
+image: rancher/hardened-whereabouts:{{build.tag}}
+manifests:
+  -
+    image: rancher/hardened-whereabouts:{{build.tag}}-amd64
+    platform:
+      architecture: amd64
+      os: linux
