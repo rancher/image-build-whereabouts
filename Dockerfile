@@ -20,8 +20,8 @@ RUN install -s bin/* /usr/local/bin
 RUN whereabouts --version
 
 FROM ubi
-COPY --from=builder /usr/local/bin/whereabouts   /opt/bin/
-COPY --from=builder /usr/local/bin/ip-reconciler /opt/bin/
+COPY --from=builder /usr/local/bin/whereabouts   .
+COPY --from=builder /usr/local/bin/ip-reconciler .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 COPY --from=builder /go/src/${PKG}/script/install-cni.sh .
 CMD ["/install-cni.sh"]
