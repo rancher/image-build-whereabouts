@@ -1,6 +1,6 @@
-ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
+ARG BCI_IMAGE=registry.suse.com/bci/bci-base:15.3.17.20.12
 ARG GO_IMAGE=rancher/hardened-build-base:v1.16.15b7
-FROM ${UBI_IMAGE} as ubi
+FROM ${BCI_IMAGE} as bci
 
 FROM ${GO_IMAGE} as builder
 ARG ARCH="amd64"
@@ -19,7 +19,7 @@ RUN go-assert-boring.sh bin/*
 RUN install -s bin/* /usr/local/bin
 RUN whereabouts --version
 
-FROM ubi
+FROM bci
 COPY --from=builder /usr/local/bin/whereabouts   .
 COPY --from=builder /usr/local/bin/ip-reconciler .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
