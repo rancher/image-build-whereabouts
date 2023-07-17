@@ -14,7 +14,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/k8snetworkplumbingwg/whereabouts
 SRC ?= github.com/k8snetworkplumbingwg/whereabouts
-TAG ?= v0.6.1$(BUILD_META)
+TAG ?= v0.6.2$(BUILD_META)
 
 ifneq ($(DRONE_TAG),)
 	TAG := $(DRONE_TAG)
@@ -50,4 +50,4 @@ image-manifest:
 
 .PHONY: image-scan
 image-scan:
-	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-whereabouts:$(TAG)
+	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed image $(ORG)/hardened-whereabouts:$(TAG)
