@@ -1,4 +1,4 @@
-ARG BCI_IMAGE=registry.suse.com/bci/bci-micro
+#ARG BCI_IMAGE=registry.suse.com/bci/bci-micro
 ARG GO_IMAGE=rancher/hardened-build-base:v1.20.7b3
 FROM ${BCI_IMAGE} as bci
 
@@ -24,9 +24,10 @@ RUN go-assert-boring.sh bin/*
 RUN install -s bin/* /usr/local/bin
 RUN whereabouts --version
 
-FROM bci
-COPY --from=builder /usr/local/bin/whereabouts   .
+FROM scratch
+COPY --from=builder /usr/local/bin/whereabouts .
 COPY --from=builder /usr/local/bin/ip-control-loop .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 COPY --from=builder /go/src/${PKG}/script/install-cni.sh .
 CMD ["/install-cni.sh"]
+
