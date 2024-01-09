@@ -14,7 +14,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/k8snetworkplumbingwg/whereabouts
 SRC ?= github.com/k8snetworkplumbingwg/whereabouts
-TAG ?= v0.6.2$(BUILD_META)
+TAG ?= v0.6.3$(BUILD_META)
 
 ifneq ($(DRONE_TAG),)
 	TAG := $(DRONE_TAG)

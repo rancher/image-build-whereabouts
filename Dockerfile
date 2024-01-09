@@ -1,10 +1,10 @@
 ARG BCI_IMAGE=registry.suse.com/bci/bci-base
-ARG GO_IMAGE=rancher/hardened-build-base:v1.20.7b3
+ARG GO_IMAGE=rancher/hardened-build-base:v1.20.12b2
 FROM ${BCI_IMAGE} as bci
 
 FROM ${GO_IMAGE} as builder
 ARG ARCH="amd64"
-ARG TAG="v0.6.2"
+ARG TAG="v0.6.3"
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 ARG SRC="github.com/k8snetworkplumbingwg/whereabouts"
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
