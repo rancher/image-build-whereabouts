@@ -4,7 +4,7 @@ FROM ${BCI_IMAGE} as bci
 
 FROM ${GO_IMAGE} as builder
 ARG ARCH="amd64"
-ARG TAG="v0.6.3"
+ARG TAG=v0.6.3
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 ARG SRC="github.com/k8snetworkplumbingwg/whereabouts"
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
