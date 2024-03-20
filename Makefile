@@ -16,17 +16,14 @@ PKG ?= github.com/k8snetworkplumbingwg/whereabouts
 SRC ?= github.com/k8snetworkplumbingwg/whereabouts
 TAG ?= v0.6.3$(BUILD_META)
 
-ifneq ($(DRONE_TAG),)
-	TAG := $(DRONE_TAG)
-endif
-
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
-	$(error TAG needs to end with build metadata: $(BUILD_META))
+$(error TAG $(TAG) needs to end with build metadata: $(BUILD_META))
 endif
 
 .PHONY: image-build
 image-build:
-	docker build \
+	docker buildx build \
+		--platform=$(ARCH) \
 		--pull \
 		--build-arg ARCH=$(ARCH) \
 		--build-arg PKG=$(PKG) \
@@ -34,20 +31,23 @@ image-build:
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--tag $(ORG)/hardened-whereabouts:$(TAG) \
 		--tag $(ORG)/hardened-whereabouts:$(TAG)-$(ARCH) \
+		--load \
 		.
 
 .PHONY: image-push
 image-push:
 	docker push $(ORG)/hardened-whereabouts:$(TAG)-$(ARCH)
 
-.PHONY: image-manifest
-image-manifest:
-	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend \
-		$(ORG)/hardened-whereabouts:$(TAG) \
-		$(ORG)/hardened-whereabouts:$(TAG)-$(ARCH)
-	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push \
-		$(ORG)/hardened-whereabouts:$(TAG)
-
 .PHONY: image-scan
 image-scan:
 	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed image $(ORG)/hardened-whereabouts:$(TAG)
+
+PHONY: log
+log:
+	@echo "ARCH=$(ARCH)"
+	@echo "TAG=$(TAG)"
+	@echo "ORG=$(ORG)"
+	@echo "PKG=$(PKG)"
+	@echo "SRC=$(SRC)"
+	@echo "BUILD_META=$(BUILD_META)"
+	@echo "UNAME_M=$(UNAME_M)"
