@@ -14,7 +14,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/k8snetworkplumbingwg/whereabouts
 SRC ?= github.com/k8snetworkplumbingwg/whereabouts
-TAG ?= ${GITHUB_ACTION_TAG}
+TAG ?= v0.7.0$(BUILD_META)
 
 ifeq ($(TAG),)
 TAG := v0.7.0$(BUILD_META)
