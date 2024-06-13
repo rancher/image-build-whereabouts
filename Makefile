@@ -29,7 +29,6 @@ image-build:
 	docker buildx build \
 		--platform=$(ARCH) \
 		--pull \
-		--build-arg ARCH=$(ARCH) \
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
