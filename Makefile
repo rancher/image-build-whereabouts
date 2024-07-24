@@ -17,7 +17,7 @@ SRC ?= github.com/k8snetworkplumbingwg/whereabouts
 TAG ?= ${GITHUB_ACTION_TAG}
 
 ifeq ($(TAG),)
-TAG := v0.7.0$(BUILD_META)
+TAG := v0.8.0$(BUILD_META)
 endif
 
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
