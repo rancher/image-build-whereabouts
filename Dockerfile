@@ -1,11 +1,11 @@
 ARG BCI_IMAGE=registry.suse.com/bci/bci-busybox
 ARG GO_IMAGE=rancher/hardened-build-base:v1.21.11b3
-FROM ${BCI_IMAGE} as bci
+FROM ${BCI_IMAGE} AS bci
 
 # Image that provides cross compilation tooling.
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
 
-FROM --platform=$BUILDPLATFORM ${GO_IMAGE} as base-builder
+FROM --platform=$BUILDPLATFORM ${GO_IMAGE} AS base-builder
 # copy xx scripts to your build stage
 COPY --from=xx / /
 RUN apk add file make git clang lld 
@@ -13,7 +13,7 @@ ARG TARGETPLATFORM
 RUN set -x && \
     xx-apk --no-cache add musl-dev gcc 
 
-FROM base-builder as whereabouts-builder
+FROM base-builder AS whereabouts-builder
 ARG TAG=v0.8.0
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 ARG SRC="github.com/k8snetworkplumbingwg/whereabouts"
@@ -38,7 +38,7 @@ RUN go-assert-boring.sh bin/*
 RUN xx-verify --static bin/*
 RUN install bin/* /usr/local/bin
 
-FROM ${GO_IMAGE} as strip_binary
+FROM ${GO_IMAGE} AS strip_binary
 #strip needs to run on TARGETPLATFORM, not BUILDPLATFORM
 COPY --from=whereabouts-builder /usr/local/bin/whereabouts   .
 COPY --from=whereabouts-builder /usr/local/bin/ip-control-loop .
