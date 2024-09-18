@@ -8,10 +8,10 @@ FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
 FROM --platform=$BUILDPLATFORM ${GO_IMAGE} AS base-builder
 # copy xx scripts to your build stage
 COPY --from=xx / /
-RUN apk add file make git clang lld 
+RUN apk add file make git clang lld
 ARG TARGETPLATFORM
 RUN set -x && \
-    xx-apk --no-cache add musl-dev gcc 
+    xx-apk --no-cache add musl-dev gcc
 
 FROM base-builder AS whereabouts-builder
 ARG TAG=v0.8.0
@@ -27,7 +27,7 @@ ARG TARGETARCH
 
 ENV GO111MODULE=on
 RUN GIT_SHA=$(git rev-parse --short HEAD) \
-    GIT_TREE_STATE=$(test -n "`git status --porcelain --untracked-files=no`" && echo "dirty" || echo "clean") && \ 
+    GIT_TREE_STATE=$(test -n "`git status --porcelain --untracked-files=no`" && echo "dirty" || echo "clean") && \
     export GO_LDFLAGS="-X ${PKG}/pkg/version.Version=${TAG} \
     -X ${PKG}/pkg/version.GitSHA=${GIT_SHA} \
     -X ${PKG}/pkg/version.GitTreeState=${GIT_TREE_STATE}" && \
@@ -49,4 +49,8 @@ COPY --from=strip_binary /go/whereabouts .
 COPY --from=strip_binary /go/ip-control-loop .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 COPY --from=whereabouts-builder /go/src/${PKG}/script/install-cni.sh .
+ARG BCI_IMAGE
+LABEL org.opencontainers.image.url="https://registry.suse.com/categories/bci/repositories/bci-busybox-15sp5"
+LABEL org.opencontainers.image.source="https://github.com/k8snetworkplumbingwg/whereabouts.git"
+LABEL org.opencontainers.image.base.name="${BCI_IMAGE}"
 CMD ["/install-cni.sh"]
