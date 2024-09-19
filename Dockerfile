@@ -50,7 +50,7 @@ COPY --from=strip_binary /go/ip-control-loop .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 COPY --from=whereabouts-builder /go/src/${PKG}/script/install-cni.sh .
 ARG BCI_IMAGE
-LABEL org.opencontainers.image.url="https://registry.suse.com/categories/bci/repositories/bci-busybox-15sp5"
-LABEL org.opencontainers.image.source="https://github.com/k8snetworkplumbingwg/whereabouts.git"
+LABEL org.opencontainers.image.url="https://hub.docker.com/r/rancher/hardened-whereabouts"
+LABEL org.opencontainers.image.source="https://github.com/rancher/image-build-whereabouts"
 LABEL org.opencontainers.image.base.name="${BCI_IMAGE}"
 CMD ["/install-cni.sh"]
