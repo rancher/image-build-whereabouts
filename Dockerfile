@@ -26,14 +26,13 @@ RUN go mod download
 ARG TARGETARCH
 
 ENV GO111MODULE=on
-RUN GIT_SHA=$(git rev-parse --short HEAD) \
-    GIT_TREE_STATE=$(test -n "`git status --porcelain --untracked-files=no`" && echo "dirty" || echo "clean") && \
-    export GO_LDFLAGS="-X ${PKG}/pkg/version.Version=${TAG} \
-    -X ${PKG}/pkg/version.GitSHA=${GIT_SHA} \
-    -X ${PKG}/pkg/version.GitTreeState=${GIT_TREE_STATE}" && \
-    xx-go --wrap && \
-    go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -mod vendor -o bin/whereabouts cmd/whereabouts.go && \
-    go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -mod vendor -o bin/ip-control-loop cmd/controlloop/*.go
+RUN GIT_COMMIT=$(git rev-parse --short HEAD) \
+    export GO_LDFLAGS=" \
+    -X ${PKG}/pkg/version.Version=${TAG} \
+    -X ${PKG}/pkg/version.GitCommit=${GIT_COMMIT} \
+    " && xx-go --wrap && \
+    go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -mod vendor -o bin/whereabouts ./cmd/ && \
+    go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -mod vendor -o bin/ip-control-loop ./cmd/controlloop/
 RUN go-assert-boring.sh bin/*
 RUN xx-verify --static bin/*
 RUN install bin/* /usr/local/bin
