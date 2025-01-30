@@ -26,7 +26,7 @@ jobs:
           app-id: ${{ env.APP_ID }}
           private-key: ${{ env.PRIVATE_KEY }}
     outputs:
-      app_token: ${{ steps.app-token.outputs.token }}
+      app_token: ${{ steps.create_app_token.outputs.token }}
 
   build-amd64:
     runs-on: ubuntu-latest
