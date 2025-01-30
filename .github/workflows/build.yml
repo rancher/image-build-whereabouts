@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   security-events: write # upload Sarif results
+  id-token: write
 
 name: Build
 jobs:
