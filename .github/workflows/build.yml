@@ -43,7 +43,7 @@ jobs:
         file: Dockerfile
         build-args: |
           TAG=${{ env.TAG }}
-          SRC=${{ steps.app-token.outputs.token }}@github.com/rancher/release-whereabouts
+          SRC=${{ steps.app-token.outputs.token }}@github.com:rancher/release-whereabouts
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.29.0
@@ -100,4 +100,4 @@ jobs:
         platforms: linux/arm64
         build-args: |
           TAG=${{ env.TAG }}
-          SRC=${{ steps.app-token.outputs.token }}@github.com/rancher/release-whereabouts
+          SRC=${{ steps.app-token.outputs.token }}@github.com:rancher/release-whereabouts
