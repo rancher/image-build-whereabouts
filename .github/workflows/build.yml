@@ -10,8 +10,27 @@ permissions:
 
 name: Build
 jobs:
+  create-app-token:
+    runs-on:
+      ubuntu-latest
+    steps:
+      - id: "Read secrets"
+        uses: rancher-eio/read-vault-secrets@main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/github/release-app-credentials appId | APP_ID ;
+            secret/data/github/repo/${{ github.repository }}/github/release-app-credentials privateKey | PRIVATE_KEY
+      - id: "Create App Token"
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ env.APP_ID }}
+          private-key: ${{ env.PRIVATE_KEY }}
+    outputs:
+      app_token: ${{ steps.app-token.outputs.token }}
+
   build-amd64:
     runs-on: ubuntu-latest
+    needs: create-app-token
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -20,6 +39,7 @@ jobs:
       id: get-TAG
       run: |
         echo "$(make -s log | grep TAG)" >> "$GITHUB_ENV"
+
     - name: Build container image
       uses: docker/build-push-action@v6
       with:
@@ -29,6 +49,7 @@ jobs:
         file: Dockerfile
         build-args: |
           TAG=${{ env.TAG }}
+          SRC=${{ needs.create-app-token.outputs.app_token }}@github.com/rancher/release-whereabouts
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.29.0
@@ -47,6 +68,7 @@ jobs:
 
   build-arm64:
     runs-on: ubuntu-latest
+    needs: create-app-token
     steps:
     - name: Check out code
       uses: actions/checkout@v4
@@ -61,6 +83,7 @@ jobs:
       id: get-TAG
       run: |
         echo "$(make -s log | grep TAG)" >> "$GITHUB_ENV"
+
     - name: Build container image
       uses: docker/build-push-action@v6
       with:
@@ -72,3 +95,4 @@ jobs:
         platforms: linux/arm64
         build-args: |
           TAG=${{ env.TAG }}
+          SRC=${{ needs.create-app-token.outputs.app_token }}@github.com/rancher/release-whereabouts
