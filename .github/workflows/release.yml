@@ -3,7 +3,8 @@ on:
     types: [published]
 
 permissions:
-  contents: read  
+  contents: read
+  id-token: write
 
 env:
   GITHUB_ACTION_TAG: ${{ github.ref_name }}
@@ -29,7 +30,17 @@ jobs:
         secrets: |
           secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials registry | PRIME_REGISTRY ;
           secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials username | PRIME_REGISTRY_USERNAME ;
-          secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials password | PRIME_REGISTRY_PASSWORD
+          secret/data/github/repo/${{ github.repository }}/rancher-prime-registry/credentials password | PRIME_REGISTRY_PASSWORD ;
+          secret/data/github/repo/${{ github.repository }}/github/release-app-credentials appId | APP_ID ;
+          secret/data/github/repo/${{ github.repository }}/github/release-app-credentials privateKey | PRIVATE_KEY
+
+    - name: Create App Token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ env.APP_ID }}
+          private-key: ${{ env.PRIVATE_KEY }}
 
     - name: Build and push container image
       uses: rancher/ecm-distro-tools/actions/publish-image@master

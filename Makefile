@@ -22,7 +22,7 @@ endif
 
 BUILD_META=-build$(shell date +%Y%m%d)
 PKG ?= github.com/k8snetworkplumbingwg/whereabouts
-SRC ?= github.com/k8snetworkplumbingwg/whereabouts
+SRC ?= github.com/rancher/whereabouts
 TAG ?= ${GITHUB_ACTION_TAG}
 
 ifeq ($(TAG),)
