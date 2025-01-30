@@ -14,13 +14,13 @@ jobs:
     runs-on:
       ubuntu-latest
     steps:
-      - id: "Read secrets"
+      - id: read_secrets
         uses: rancher-eio/read-vault-secrets@main
         with:
           secrets: |
             secret/data/github/repo/${{ github.repository }}/github/release-app-credentials appId | APP_ID ;
             secret/data/github/repo/${{ github.repository }}/github/release-app-credentials privateKey | PRIVATE_KEY
-      - id: "Create App Token"
+      - id: create_app_token
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ env.APP_ID }}
