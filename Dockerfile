@@ -48,6 +48,8 @@ COPY --from=strip_binary /go/whereabouts .
 COPY --from=strip_binary /go/ip-control-loop .
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 COPY --from=whereabouts-builder /go/src/${PKG}/script/install-cni.sh .
+COPY --from=whereabouts-builder /go/src/${PKG}/script/lib.sh .
+COPY --from=whereabouts-builder /go/src/${PKG}/script/token-watcher.sh .
 ARG BCI_IMAGE
 LABEL org.opencontainers.image.url="https://hub.docker.com/r/rancher/hardened-whereabouts"
 LABEL org.opencontainers.image.source="https://github.com/rancher/image-build-whereabouts"
