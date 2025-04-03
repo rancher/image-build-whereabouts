@@ -21,6 +21,8 @@ RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
 RUN git checkout tags/${TAG} -b ${TAG}
+COPY source_lib.patch $GOPATH/src/${PKG}
+RUN git apply source_lib.patch
 RUN go mod download
 # cross-compilation setup
 ARG TARGETARCH

@@ -1,0 +1,13 @@
+diff --git a/script/install-cni.sh b/script/install-cni.sh
+index c6a14ed1..bd32c77e 100755
+--- a/script/install-cni.sh
++++ b/script/install-cni.sh
+@@ -10,7 +10,7 @@ set -u -e
+ #
+ #SPDX-License-Identifier: Apache-2.0
+ 
+-source lib.sh
++source /lib.sh
+ 
+ # Setup our logging routines
+ 
