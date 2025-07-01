@@ -14,7 +14,7 @@ RUN set -x && \
     xx-apk --no-cache add musl-dev gcc
 
 FROM base-builder AS whereabouts-builder
-ARG TAG=v0.9.0
+ARG TAG=v0.9.1
 ARG PKG="github.com/k8snetworkplumbingwg/whereabouts"
 ARG SRC="github.com/k8snetworkplumbingwg/whereabouts"
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
