@@ -3,7 +3,7 @@ ARG GO_IMAGE=rancher/hardened-build-base:v1.24.7b1
 FROM ${BCI_IMAGE} AS bci
 
 # Image that provides cross compilation tooling.
-FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.6.1 AS xx
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.7.0 AS xx
 
 FROM --platform=$BUILDPLATFORM ${GO_IMAGE} AS base-builder
 # copy xx scripts to your build stage
