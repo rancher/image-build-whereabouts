@@ -26,7 +26,7 @@ SRC ?= github.com/k8snetworkplumbingwg/whereabouts
 TAG ?= ${GITHUB_ACTION_TAG}
 
 ifeq ($(TAG),)
-TAG := v0.9.2$(BUILD_META)
+TAG := v0.9.3$(BUILD_META)
 endif
 
 REPO ?= rancher
