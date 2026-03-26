@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
     - name: Set the TAG value
       id: get-TAG
@@ -24,7 +24,7 @@ jobs:
         echo "$(make -s log | grep TAG)" >> "$GITHUB_ENV"
         
     - name: "Read secrets"
-      uses: rancher-eio/read-vault-secrets@main
+      uses: rancher-eio/read-vault-secrets@0da85151ad1f19ed7986c41587e45aac1ace74b6 # v3
       with:
         secrets: |
           secret/data/github/repo/${{ github.repository }}/dockerhub/${{ github.repository_owner }}/credentials username | DOCKER_USERNAME ;
@@ -37,7 +37,7 @@ jobs:
           secret/data/github/repo/${{ github.repository }}/rancher-prime-stg-registry/credentials password | STAGING_REGISTRY_PASSWORD ;
 
     - name: Build and push container image - Staging
-      uses: rancher/ecm-distro-tools/actions/publish-image@master
+      uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # v0.66.0
       with:
         image: hardened-whereabouts
         tag: ${{ github.event.release.tag_name }}
@@ -49,7 +49,7 @@ jobs:
         prime-password: ${{ env.STAGING_REGISTRY_PASSWORD }}
 
     - name: Build and push container image
-      uses: rancher/ecm-distro-tools/actions/publish-image@master
+      uses: rancher/ecm-distro-tools/actions/publish-image@10ab39987d39be83da6a252c1c3b540e496e0287 # v0.66.0
       with:
         image: hardened-whereabouts
         tag: ${{ github.event.release.tag_name }}
