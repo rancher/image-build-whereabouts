@@ -1,6 +1,5 @@
 ARG BCI_IMAGE=registry.suse.com/bci/bci-busybox
 ARG GO_IMAGE=rancher/hardened-build-base:v1.25.12b1
-FROM ${BCI_IMAGE} AS bci
 
 # Image that provides cross compilation tooling.
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.9.0 AS xx
@@ -49,7 +48,7 @@ COPY --from=whereabouts-builder /usr/local/bin/ip-reconciler .
 COPY --from=whereabouts-builder /usr/local/bin/node-slice-controller . 
 RUN strip ./whereabouts ./ip-control-loop ./ip-reconciler ./node-slice-controller
 
-FROM bci
+FROM ${BCI_IMAGE}
 COPY --from=strip_binary /go/whereabouts .
 COPY --from=strip_binary /go/ip-control-loop .
 COPY --from=strip_binary /go/ip-reconciler .
