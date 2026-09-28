@@ -24,7 +24,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 TAG ?= ${GITHUB_ACTION_TAG}
 
 ifeq ($(TAG),)
-TAG := v0.9.4$(BUILD_META)
+TAG := $(shell cat TAG)$(BUILD_META)
 endif
 
 REPO ?= rancher
