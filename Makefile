@@ -1,15 +1,6 @@
 SEVERITIES = HIGH,CRITICAL
 
 UNAME_M = $(shell uname -m)
-ARCH=
-ifeq ($(UNAME_M), x86_64)
-	ARCH=amd64
-else ifeq ($(UNAME_M), aarch64)
-	ARCH=arm64
-else 
-	ARCH=$(UNAME_M)
-endif
-
 ifndef TARGET_PLATFORMS
 	ifeq ($(UNAME_M), x86_64)
 		TARGET_PLATFORMS:=linux/amd64
@@ -37,11 +28,9 @@ endif
 .PHONY: image-build
 image-build:
 	docker buildx build \
-		--platform=$(ARCH) \
-		--pull \
+		--platform=$(TARGET_PLATFORMS) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--tag $(IMAGE) \
-		--tag $(IMAGE)-$(ARCH) \
 		--load \
 		.
 
@@ -54,13 +43,12 @@ push-image:
 		--platform=$(TARGET_PLATFORMS) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--tag $(IMAGE) \
-		--tag $(IMAGE)-$(ARCH) \
 		--push \
 		.
 
 .PHONY: image-push
 image-push:
-	docker push $(IMAGE)-$(ARCH)
+	docker push $(IMAGE)
 
 .PHONY: image-scan
 image-scan:
@@ -68,7 +56,6 @@ image-scan:
 
 PHONY: log
 log:
-	@echo "ARCH=$(ARCH)"
 	@echo "TAG=$(TAG:$(BUILD_META)=)"
 	@echo "REPO=$(REPO)"
 	@echo "IMAGE=$(IMAGE)"
