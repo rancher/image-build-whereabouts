@@ -1,9 +1,11 @@
-# golang.org/x/net: CVE-2026-25681, CVE-2026-27136 (net/html XSS), CVE-2026-33814 (net/http2 DoS), CVE-2026-39821 (x/net/idna punycode), CVE-2026-25680, CVE-2026-42502, CVE-2026-42506 (net/html XSS/DoS), CVE-2026-46600 (x/net/dns/dnsmessage panic parsing invalid SVCB or HTTPS RR).
-# Drop once upstream requires golang.org/x/net >= v0.56.0.
--replace golang.org/x/net=golang.org/x/net@v0.56.0
+# golang.org/x/net: CVE-2026-25681, CVE-2026-27136 (net/html XSS), CVE-2026-33814 (net/http2 DoS), CVE-2026-39821 (x/net/idna punycode), CVE-2026-25680, CVE-2026-42502, CVE-2026-42506 (net/html XSS/DoS), CVE-2026-46600 (x/net/dns/dnsmessage panic parsing invalid SVCB or HTTPS RR), CVE-2026-78659, CVE-2026-78660, CVE-2026-78663, CVE-2026-78669, CVE-2026-97032 (net/http2 DoS/crash).
+# Drop once upstream requires golang.org/x/net >= v0.60.0.
+-replace golang.org/x/net=golang.org/x/net@v0.60.0
 # golang.org/x/sys: CVE-2026-39824 (integer overflow in NewNTUnicodeString in golang.org/x/sys/windows).
-# Drop once upstream requires golang.org/x/sys >= v0.44.0.
--replace golang.org/x/sys=golang.org/x/sys@v0.44.0
+# v0.48.0 required by golang.org/x/net v0.60.0.
+# Drop once upstream requires golang.org/x/sys >= v0.48.0.
+-replace golang.org/x/sys=golang.org/x/sys@v0.48.0
 # golang.org/x/text: CVE-2026-56852 (infinite loop on invalid input).
-# Drop once upstream requires golang.org/x/text >= v0.39.0.
--replace golang.org/x/text=golang.org/x/text@v0.39.0
+# v0.42.0 required by golang.org/x/net v0.60.0.
+# Drop once upstream requires golang.org/x/text >= v0.42.0.
+-replace golang.org/x/text=golang.org/x/text@v0.42.0
